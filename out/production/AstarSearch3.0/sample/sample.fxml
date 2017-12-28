@@ -2,6 +2,7 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,8 +32,9 @@
                 </Button>
                 <TextArea fx:id="matrix" layoutX="14.0" layoutY="149.0" prefHeight="162.0" prefWidth="200.0" />
                 <TextField fx:id="dimension" layoutX="14.0" layoutY="57.0" prefHeight="25.0" prefWidth="144.0" />
-                <Button onAction="#nextNode" layoutX="407.0" layoutY="363.0" mnemonicParsing="false" text="NEXT-&gt;" />
-                <Button onAction="#prevNode" layoutX="350.0" layoutY="363.0" mnemonicParsing="false" text="&lt;-PREV" />
+                <Button layoutX="407.0" layoutY="363.0" mnemonicParsing="false" onAction="#nextNode" text="NEXT-&gt;" />
+                <Button layoutX="350.0" layoutY="363.0" mnemonicParsing="false" onAction="#prevNode" text="&lt;-PREV" />
+            <Label fx:id="text" layoutX="12.0" layoutY="323.0" prefHeight="28.0" prefWidth="200.0" />
             </children>
         </AnchorPane>
     </children>

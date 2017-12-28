@@ -3,6 +3,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.canvas.Canvas;
@@ -23,6 +24,7 @@ public class Controller {
     @FXML public Canvas mainCan;
     @FXML public TextField dimension;
     @FXML public TextArea matrix;
+    @FXML public Label text;
 
     /**
      * \brief Данный метод отвечает за обработку клафиши в интерфейсе, которая по сути приводит весь алгоритм решения в действие
@@ -35,10 +37,14 @@ public class Controller {
         String temp = dimension.getText();
         if (temp.length() != 0) {
             int n = Integer.parseInt(temp);
-            if (2 <= n && n <= 10) {
+            if (2 <= n && n <= 20) {
                 currentField = new Field(n);
                 solver = new Solver(currentField);
-                boolean req = solver.isSolvable();
+                if (solver.isSolvable()){
+                    text.setText("number of moves: " + solver.moves());
+                } else {
+                    text.setText("NO SOLUTION");
+                }
                 solution = new Vector(0);
                 for(Board board : solver.solution()) {
                     solution.add(board);
@@ -55,6 +61,7 @@ public class Controller {
      *
      */
     public void makeFieldFromMatrix() {
+        currentStatement = 0;
         GraphicsContext gc = mainCan.getGraphicsContext2D();
         gc.clearRect(0, 0, mainCan.getWidth(), mainCan.getHeight());
         String temp = matrix.getText();
@@ -73,7 +80,6 @@ public class Controller {
             solver = new Solver(currentField);
             if(solver.isSolvable()) {
                 solution = new Vector(0);
-
                 for (Board board : solver.solution()) {
                     solution.add(board);
                 }
@@ -89,15 +95,13 @@ public class Controller {
      */
     public void nextNode() {
         if (solver.isSolvable()) {
-            currentStatement += 1;
-            if (currentStatement < solution.size()) {
-                GraphicsContext gc = mainCan.getGraphicsContext2D();
-                gc.clearRect(0, 0, mainCan.getWidth(), mainCan.getHeight());
-                currentField.board = solution.get(currentStatement).board;
-                int pxlSize = 300;
-                currentField.drawField(pxlSize, mainCan, ((int) mainCan.getWidth() - pxlSize) / 2, ((int) mainCan.getHeight() - pxlSize) / 2, gc);
-            } else {
-                currentStatement = solution.size() - 1;
+            if (0 <= currentStatement && currentStatement < solution.size() - 1) {
+                currentStatement += 1;
+                    GraphicsContext gc = mainCan.getGraphicsContext2D();
+                    gc.clearRect(0, 0, mainCan.getWidth(), mainCan.getHeight());
+                    currentField.board = solution.get(currentStatement).board;
+                    int pxlSize = 300;
+                    currentField.drawField(pxlSize, mainCan, ((int) mainCan.getWidth() - pxlSize) / 2, ((int) mainCan.getHeight() - pxlSize) / 2, gc);
             }
         }
     }
@@ -107,16 +111,13 @@ public class Controller {
       */
     public void prevNode() {
         if (solver.isSolvable()) {
-            currentStatement -= 1;
-            if (currentStatement < solution.size() && currentStatement >= 0) {
+            if (currentStatement > 0)
+                currentStatement -= 1;
                 GraphicsContext gc = mainCan.getGraphicsContext2D();
                 gc.clearRect(0, 0, mainCan.getWidth(), mainCan.getHeight());
                 currentField.board = solution.get(currentStatement).board;
                 int pxlSize = 300;
                 currentField.drawField(pxlSize, mainCan, ((int) mainCan.getWidth() - pxlSize) / 2, ((int) mainCan.getHeight() - pxlSize) / 2, gc);
-            } else {
-                currentStatement = 0;
-            }
         }
     }
 }

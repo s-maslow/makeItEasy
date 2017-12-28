@@ -142,11 +142,12 @@ public class Solver {
                 if (this.init.board[i][j] == 0) {
                     zeroRow = i + 1;
                 }
-                for (int row = 0; row <= i; row++) {
-                    for (int coll = 0; row == i ? coll <= j : coll < this.init.dimension(); coll++) {
-                        if (this.init.board[i][j] < this.init.board[row][coll])
-                            if (this.init.board[row][coll] != 0)
-                                sum++;
+                if (this.init.board[i][j] != 0) {
+                    for (int row = 0; row <= i; row++) {
+                        for (int coll = 0; row == i ? coll < j : coll < this.init.dimension(); coll++) {
+                                if (this.init.board[i][j] < this.init.board[row][coll])
+                                    sum++;
+                        }
                     }
                 }
             }
